@@ -1,0 +1,32 @@
+{
+  "Alllist": [
+    {
+      "state": false,
+      "type": "你好",
+      "SendP": "随机",
+      "SendD": "2020年8月30日 11:09",
+      "id": 1
+    },
+    {
+      "state": false,
+      "type": "吃饭",
+      "SendP": "随机",
+      "SendD": "2020年9月30日 16:21",
+      "id": 2
+    },
+    {
+      "state": false,
+      "type": "睡觉",
+      "SendP": "随机",
+      "SendD": "2020年9月30日 16:21",
+      "id": 3
+    },
+    {
+      "state": false,
+      "type": "打豆豆",
+      "SendP": "随机",
+      "SendD": "2020年9月30日 16:22",
+      "id": 4
+    }
+  ]
+}
