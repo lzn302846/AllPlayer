@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        canvas {
+            overflow: hidden;
+            display: block;
+        }
     </style>
 </head>
 
@@ -19,9 +27,11 @@
         setTimeout(() => {
             var canvas = document.getElementById('canvas'),
                 ctx = canvas.getContext('2d'),
-                w = canvas.width = window.innerWidth,
-                h = canvas.height = window.innerHeight,
-                hue = 217,
+                w = window.innerWidth,
+                h = window.innerHeight;
+                canvas.width = w;
+                canvas.height = h;
+                var hue = 217,
                 stars = [],
                 count = 0,
                 maxStars = 1200;

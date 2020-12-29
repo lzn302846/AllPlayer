@@ -74,7 +74,7 @@ export default {
 </script>
 <style lang="less">
 .usernameClass{
-  color: #52C41A;
+  color: @primary-color;
 }
 .action {
   color: black;
@@ -93,7 +93,7 @@ export default {
   transition: 0.2s;
   border-bottom: 1px lightgray solid;
   width: 88.8%;
-  background: white;
+  background: rgba(255,255,255,0.8);
   height: 70px;
   margin-left: 172px;
   color: white;

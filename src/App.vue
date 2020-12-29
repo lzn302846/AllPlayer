@@ -9,7 +9,7 @@
 <script>
 import Cookies from 'js-cookie'
 import instance2 from '@/utils/http';
-import login from './views/login/login'
+import login from '@/views/login/login'
 import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN';
 import {mapMutations} from 'vuex'
 export default {
@@ -28,8 +28,8 @@ export default {
   //     }).catch(err=>{next('/login')})
   // },
   created(){
-  //   instance2.post('/api/user/isloginin').then(res=>{
-  //     this.changeLoginMsg(res)
+    // instance2.post('/api/user/isloginin').then(res=>{
+      // this.changeLoginMsg(res)
   if(Cookies.get('token')){
     this.changeLoginMsg(localStorage.getItem('username'))
     if(sessionStorage.getItem('path')){

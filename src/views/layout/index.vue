@@ -1,5 +1,6 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger">
+    <canvas id="snowCanvas" style="position: absolute;left: 0;top: 0;"></canvas>
     <div class="header" style>
       <div :class="['logo',collapsed?'logoWidth':'',layoutMode==='topmenu'?'logoTopMenu':'']">
         <p class="logoTitle">大惠企业</p>
@@ -13,24 +14,24 @@
         >
           <transition name="def">
             <div v-if="layoutMode==='topmenu'" class="topmenuStyle">
-            <a-menu v-model="current" mode="horizontal">
-              <a-menu-item key="content" @click="oSkip(panes[0])">
-                <a-icon type="home" />&nbsp;
-                <span>首页</span>
-              </a-menu-item>
-              <a-sub-menu :key="menu.key" v-for="menu in MenuList">
-                <span slot="title">
-                  <a-icon :type="menu.type" />
-                  <span>{{menu.title}}</span>
-                </span>
-                <a-menu-item
-                  @click="oSkip(me)"
-                  :key="me.key"
-                  v-for="me in menu.children"
-                >{{me.title}}</a-menu-item>
-              </a-sub-menu>
-            </a-menu>
-          </div>
+              <a-menu v-model="current" mode="horizontal">
+                <a-menu-item key="content" @click="oSkip(panes[0])">
+                  <a-icon type="home" />&nbsp;
+                  <span>首页</span>
+                </a-menu-item>
+                <a-sub-menu :key="menu.key" v-for="menu in MenuList">
+                  <span slot="title">
+                    <a-icon :type="menu.type" />
+                    <span>{{menu.title}}</span>
+                  </span>
+                  <a-menu-item
+                    @click="oSkip(me)"
+                    :key="me.key"
+                    v-for="me in menu.children"
+                  >{{me.title}}</a-menu-item>
+                </a-sub-menu>
+              </a-menu>
+            </div>
           </transition>
         </Settings>
       </div>
@@ -41,7 +42,7 @@
         v-model="collapsed"
         :trigger="null"
         width="162"
-        :style="{background: '#fff'}"
+        :style="{background: 'rgba(255,255,255,0.6)!important'}"
       >
         <a-menu
           mode="inline"
@@ -51,7 +52,7 @@
           :defaultSelectedKeys="[oPath]"
           @click="handClick"
           :defaultOpenKeys="[defaultPath || 'sub1']"
-          :style="{ height: '100%', borderRight: 0 }"
+          :style="{ height: '100%', borderRight: 0,background: 'rgba(255,255,255,0.6)!important'}"
           @openChange="onOpenChange"
         >
           <a-menu-item key="content" @click="oSkip(panes[0])">
@@ -95,46 +96,60 @@
   </a-layout>
 </template>
 <script>
-import { mapState } from 'vuex'
-import SettingDrawer from '@/views/Setting/SettingDrawer'
-import Settings from '@/components/Setting/Settings'
+import { mapState } from "vuex";
+import SettingDrawer from "@/views/Setting/SettingDrawer";
+import Settings from "@/components/Setting/Settings";
+var particles = [];
+var mp = 95;
+var snowAngle = 0;
+var W = window.innerWidth;
+var H = window.innerHeight;
+for (var i = 0; i < mp; i++) {
+  particles.push({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: Math.random() * 4 + 1,
+    d: Math.random() * mp
+  });
+}
 export default {
-  data () {
-    const panes = [{ title: '首页', key: 'content' }]
+  data() {
+    const panes = [{ title: "首页", key: "content" }];
     return {
-      onHeight: window.innerHeight + 'px',
-      current: ['mail'],
-      TwoLinkAge: { content: ['content', 'sub1'] },
+      onHeight: window.innerHeight + "px",
+      current: ["mail"],
+      TwoLinkAge: { content: ["content", "sub1"] },
       activeKey: panes[0].key,
       panes,
       newTabIndex: 0,
-      changeRoute: '',
+      changeRoute: "",
+      
       MenuList: [
         {
-          key: 'sub2',
-          type: 'money-collect',
-          title: '价格管理',
+          key: "sub2",
+          type: "money-collect",
+          title: "价格管理",
           children: [
-            { key: 'goodsPrice', title: '商品询价' },
-            { key: 'goodsNotice', title: '商品报价' }
+            { key: "goodsPrice", title: "商品询价" },
+            { key: "goodsNotice", title: "商品报价" }
           ]
         },
         {
-          key: 'sub3',
-          type: 'notification',
-          title: '通知管理',
+          key: "sub3",
+          type: "notification",
+          title: "通知管理",
           children: [
-            { key: 'notice', title: '公告信息' },
-            { key: 'todolist', title: '代办事项' }
+            { key: "notice", title: "公告信息" },
+            { key: "todolist", title: "代办事项" }
           ]
         },
         {
-          key: 'sub4',
-          type: 'sync',
-          title: '系统管理',
+          key: "sub4",
+          type: "sync",
+          title: "系统管理",
           children: [
-            { key: 'UploadImage', title: '图片上传' },
-            { key: 'menuManage', title: '菜单管理' }
+            { key: "UploadImage", title: "图片上传" },
+            { key: "menuManage", title: "菜单管理" }
           ]
         }
       ],
@@ -145,150 +160,196 @@ export default {
       oHTlist: [], // 价格管理头部数组
 
       rootSubmenuKeys: [
-        'sub1',
-        'sub2',
-        'sub3',
-        'sub4',
-        'sub5',
-        'sub6',
-        'sub7',
-        'sub8'
+        "sub1",
+        "sub2",
+        "sub3",
+        "sub4",
+        "sub5",
+        "sub6",
+        "sub7",
+        "sub8"
       ],
-      oPath: '1', // 初始展开的 SubMenu 菜单项
-      defaultPath: 'sub1', // 初始选中的菜单项 key 数组
-      openKeys: ['sub1'],
+      oPath: "1", // 初始展开的 SubMenu 菜单项
+      defaultPath: "sub1", // 初始选中的菜单项 key 数组
+      openKeys: ["sub1"],
 
-      oHeader: '',
+      oHeader: "",
       collapsed: false
-    }
+    };
   },
   components: {
     Settings,
     SettingDrawer
   },
-  mounted () {
-    document.body.classList.add('colorWeak')
-    document.title = '大惠' // 利用这个可以动态更改页面标题
+  mounted() {
+    document.body.classList.add("colorWeak");
+    document.title = "大惠"; // 利用这个可以动态更改页面标题
+    var canvas = document.getElementById("snowCanvas");
+    var ctx = canvas.getContext("2d");
+
+    canvas.width = W;
+    canvas.height = H;
+    setInterval(()=>{
+      this.drawSnow(ctx)
+    }, 22);
   },
-  created () {
-    if (sessionStorage.getItem('path')) {
-      this.oPath = JSON.parse(sessionStorage.getItem('path')).key
-      this.defaultPath = sessionStorage.getItem('defaultPath')
-      this.openKeys = [sessionStorage.getItem('defaultPath')]
-      this.TwoLinkAge[this.oPath] = [this.oPath, this.defaultPath]
-      this.oSkip(JSON.parse(sessionStorage.getItem('path')))
+  created() {
+    if (sessionStorage.getItem("path")) {
+      this.oPath = JSON.parse(sessionStorage.getItem("path")).key;
+      this.defaultPath = sessionStorage.getItem("defaultPath");
+      this.openKeys = [sessionStorage.getItem("defaultPath")];
+      this.TwoLinkAge[this.oPath] = [this.oPath, this.defaultPath];
+      this.oSkip(JSON.parse(sessionStorage.getItem("path")));
     }
   },
-  provide () {
+  provide() {
     return {
       toggleSettingDrawer: this.toggleSettingDrawer
-    }
+    };
   },
   computed: {
-    ...mapState('Settings', ['theme', 'color', 'layoutMode'])
+    ...mapState("Settings", ["theme", "color", "layoutMode"]),
   },
   methods: {
-    toggleSettingDrawer () {
-      this.$refs.SettingDrawer.changeVisible()
+        setRandomColor(){
+          var r = parseInt(Math.random()*256)
+          var g = parseInt(Math.random()*256)
+          var b = parseInt(Math.random()*256)
+          return `rgb(${r},${g},${b})`
+        },
+    drawSnow(ctx) {
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = 'rgb(255,215,0)'
+      ctx.beginPath()
+      for(var i = 0;i < mp; i++){
+        var p = particles[i]
+        ctx.moveTo(p.x,p.y)
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2,true)
+      }
+      ctx.fill()
+      this.updateSnow()
     },
-    changeCollapsed () {
-      this.collapsed = !this.collapsed
+    updateSnow(){
+      snowAngle += 0.01
+      for(var i = 0;i < mp; i++){
+        var p = particles[i]
+        p.x += Math.sin(snowAngle)*2
+        p.y += Math.cos(snowAngle+p.d)+1+p.r/2
+        if(p.x > W+5 || p.x < -5 || p.y > H){
+          if(i%3>0){
+            particles[i] = {x:Math.random()*W,y:-10,r:p.r,d:p.d}
+          }else{
+            if(Math.sin(snowAngle) > 0){
+              particles[i] = {x:-5,y:Math.random()*H,r:p.r,d:p.d}
+            }else{
+              particles[i] = {x:W + 5,y:Math.random()*H,r:p.r,d:p.d}
+            }
+          }
+        }
+      }
+    },
+    toggleSettingDrawer() {
+      this.$refs.SettingDrawer.changeVisible();
+    },
+    changeCollapsed() {
+      this.collapsed = !this.collapsed;
     },
     // 联动
-    changeRouteMe (state) {
-      this.openKeys = [this.TwoLinkAge[state][1]]
-      this.oPath = state
-      sessionStorage.setItem('defaultPath', this.openKeys)
+    changeRouteMe(state) {
+      this.openKeys = [this.TwoLinkAge[state][1]];
+      this.oPath = state;
+      sessionStorage.setItem("defaultPath", this.openKeys);
       sessionStorage.setItem(
-        'path',
+        "path",
         JSON.stringify(this.panes.filter(item => item.key === state)[0])
-      )
+      );
     },
-    onEdit (targetKey, action) {
-      this[action](targetKey)
+    onEdit(targetKey, action) {
+      this[action](targetKey);
     },
-    handleChange (e) {
-      if (e === 'notice') {
-        this.TwoLinkAge[e] = [e, 'sub3']
+    handleChange(e) {
+      if (e === "notice") {
+        this.TwoLinkAge[e] = [e, "sub3"];
       }
-      this.$router.push('/home/' + e)
-      this.changeRouteMe(e)
+      this.$router.push("/home/" + e);
+      this.changeRouteMe(e);
     },
-    remove (targetKey) {
+    remove(targetKey) {
       if (targetKey == this.panes[0].key) {
-        this.$message.warning('首页不能关闭!')
-        return
+        this.$message.warning("首页不能关闭!");
+        return;
       }
       if (this.panes.length === 1) {
-        this.$message.warning('这是最后一页，不能再关闭了啦')
-        return
+        this.$message.warning("这是最后一页，不能再关闭了啦");
+        return;
       }
-      let activeKey = this.activeKey
-      let lastIndex
+      let activeKey = this.activeKey;
+      let lastIndex;
       this.panes.forEach((pane, i) => {
         if (pane.key === targetKey) {
-          lastIndex = i - 1
+          lastIndex = i - 1;
         }
-      })
-      const panes = this.panes.filter(pane => pane.key !== targetKey)
+      });
+      const panes = this.panes.filter(pane => pane.key !== targetKey);
       if (panes.length && activeKey === targetKey) {
         if (lastIndex >= 0) {
-          activeKey = panes[lastIndex].key
+          activeKey = panes[lastIndex].key;
         } else {
-          activeKey = panes[0].key
+          activeKey = panes[0].key;
         }
       }
-      this.panes = panes
-      this.activeKey = activeKey
-      this.handleChange(this.activeKey)
+      this.panes = panes;
+      this.activeKey = activeKey;
+      this.handleChange(this.activeKey);
     },
-    handClick (e) {
-      this.TwoLinkAge[e.keyPath[0]] = e.keyPath
-      this.defaultPath = e.keyPath[1]
-      sessionStorage.setItem('defaultPath', this.defaultPath)
+    handClick(e) {
+      this.TwoLinkAge[e.keyPath[0]] = e.keyPath;
+      this.defaultPath = e.keyPath[1];
+      sessionStorage.setItem("defaultPath", this.defaultPath);
     },
-    oSkip (path) {
-      this.activeKey = path.key
-      this.oPath = path.key
-      sessionStorage.setItem('path', JSON.stringify(path))
-      this.panes.push({ title: path.title, key: path.key })
+    oSkip(path) {
+      this.activeKey = path.key;
+      this.oPath = path.key;
+      sessionStorage.setItem("path", JSON.stringify(path));
+      this.panes.push({ title: path.title, key: path.key });
 
-      const obj = {}
+      const obj = {};
       const peon = this.panes.reduce((cur, next) => {
-        obj[next.key] ? '' : (obj[next.key] = true && cur.push(next))
-        return cur
-      }, [])
-      this.panes = peon
-      this.$router.push(this.oPath)
+        obj[next.key] ? "" : (obj[next.key] = true && cur.push(next));
+        return cur;
+      }, []);
+      this.panes = peon;
+      this.$router.push(this.oPath);
     },
-    onOpenChange (openKeys) {
+    onOpenChange(openKeys) {
       const latestOpenKey = openKeys.find(
         key => this.openKeys.indexOf(key) === -1
-      )
+      );
       if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-        this.openKeys = openKeys
+        this.openKeys = openKeys;
       } else {
-        this.openKeys = latestOpenKey ? [latestOpenKey] : []
+        this.openKeys = latestOpenKey ? [latestOpenKey] : [];
       }
     }
   }
-}
+};
 </script>
 
 <style lang="less">
 @logoHeight: 70px;
 @scrollBarSize: 10px;
-.ant-menu-submenu-selected{
+.ant-menu-submenu-selected {
   color: @primary-color!important;
 }
-.logoTitle{
+.logoTitle {
   color: white;
   font-size: 35px;
   line-height: @logoHeight;
 }
-.tab-layout-tabs{
-  margin-left:10px;
-  overflow-y:scroll;
+.tab-layout-tabs {
+  margin-left: 10px;
+  overflow-y: scroll;
+  background: rgba(255,255,255,0.6)!important;
   &::-webkit-scrollbar {
     width: @scrollBarSize;
     height: @scrollBarSize;
@@ -300,15 +361,15 @@ export default {
     display: none;
   }
 }
-.logoTopMenu{
-  transition: .2s;
+.logoTopMenu {
+  transition: 0.2s;
   position: absolute;
   left: 10px;
 }
-.topmenuStyle{
-    transition: .2s;
-    position: absolute;
-    bottom: 0;
+.topmenuStyle {
+  transition: 0.2s;
+  position: absolute;
+  bottom: 0;
 }
 .logoWidth {
   transition: 0.2s;
@@ -333,7 +394,7 @@ export default {
 
 /*美化弹出Tab样式*/
 .ant-tabs-nav-container {
-  background: white;
+  background: rgba(255,255,255,0.6)!important;
   padding-left: 10px;
   padding-top: 5px;
 }
@@ -422,6 +483,7 @@ export default {
 // 右侧整体
 .ant-layout {
   padding-left: 0 !important;
+  
 }
 // content
 .ant-layout-content {

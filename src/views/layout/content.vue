@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="oContent">
-      <a-card style="width: 750px;height:230px;border-top:10px solid #E8D063;box-sizing:border-box">
+      <a-card style="width: 750px;height:230px;border-top:10px solid #1890F7;box-sizing:border-box;background: rgba(255,255,255,0.6)!important;">
           <h2>公告通知</h2>
           <div>
               <ul>
@@ -13,10 +13,10 @@
               </ul>
           </div>
       </a-card>
-      <a-card style="width: 550px;height:230px;border-top:10px solid #E8D063;box-sizing:border-box">
+      <a-card style="width: 550px;height:230px;border-top:10px solid #1890F7;box-sizing:border-box;background: rgba(255,255,255,0.6)!important;">
           <h2>预警消息</h2>
       </a-card>
-      <a-card style="width: 750px;height:370px;margin-top:10px;border-top:10px solid #E8D063;box-sizing:border-box;text-align:center;position: relative;">
+      <a-card style="width: 750px;height:370px;margin-top:10px;border-top:10px solid #1890F7;box-sizing:border-box;text-align:center;position: relative;background: rgba(255,255,255,0.6)!important;">
           <h2 style="text-align:left">北京时间</h2>
           <canvas ref="tutorial" width="300" height="300">
         你的浏览器不支持 canvas，请升级你的浏览器。
@@ -28,7 +28,7 @@
       <span style="position: absolute;top:50%;right: 42px;transform:translateY(-50%)">3</span>
     </section>
       </a-card>
-      <a-card style="width: 550px;height:370px;margin-top:10px;border-top:10px solid #E8D063;box-sizing:border-box">
+      <a-card style="width: 550px;height:370px;margin-top:10px;border-top:10px solid #1890F7;box-sizing:border-box;background: rgba(255,255,255,0.6)!important;">
           <h2>新增供应商分析</h2>
         <div class="chartPack">
             <echartsPages></echartsPages>
@@ -72,7 +72,7 @@ export default {
       const minuteAngle = pi / 180 * 6 * m + secondAngle / 60
       const hourAngle = pi / 180 * 30 * h + minuteAngle / 12 // 12小时 12 * 30 = 360 ，
       this.drawHands(secondAngle, 136, 2, 'orange', ctx)
-      this.drawHands(minuteAngle, 110, 4, 'skyblue', ctx)
+      this.drawHands(minuteAngle, 110, 4, '#1890F7', ctx)
       this.drawHands(hourAngle, 70, 6, 'lightgreen', ctx)
     },
     drawHands (angle, len, width, color, ctx) {
@@ -134,6 +134,7 @@ export default {
     display: flex;
     justify-content: space-evenly;
     flex-flow: wrap;
+    background: rgba(255,255,255,.8)!important;
 }
 .ant-card-body{
     padding: 0!important;

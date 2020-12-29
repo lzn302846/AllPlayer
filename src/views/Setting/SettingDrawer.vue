@@ -165,7 +165,7 @@ const colorList = [
     key: '日暮', color: '#FAAD14',
   },
   {
-   key: '大惠（默认）', color: '#AD9942',
+   key: '大惠（默认）', color: '#1890F7',
    // key: '拂晓蓝（默认）', color: '#1890FF',
   },
   {
