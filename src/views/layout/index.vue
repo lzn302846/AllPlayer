@@ -1,6 +1,9 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger">
-    <canvas id="snowCanvas" style="position: absolute;left: 0;top: 0;"></canvas>
+    <div id="snowBox">
+      <canvas id="snowCanvas" style="position: absolute;left: 0;top: 0;"></canvas>
+    </div>
+    
     <div class="header" style>
       <div :class="['logo',collapsed?'logoWidth':'',layoutMode==='topmenu'?'logoTopMenu':'']">
         <p class="logoTitle">大惠企业</p>
@@ -211,12 +214,6 @@ export default {
     ...mapState("Settings", ["theme", "color", "layoutMode"]),
   },
   methods: {
-        setRandomColor(){
-          var r = parseInt(Math.random()*256)
-          var g = parseInt(Math.random()*256)
-          var b = parseInt(Math.random()*256)
-          return `rgb(${r},${g},${b})`
-        },
     drawSnow(ctx) {
       ctx.clearRect(0, 0, W, H);
       ctx.fillStyle = 'rgb(255,215,0)'

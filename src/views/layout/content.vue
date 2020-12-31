@@ -3,15 +3,6 @@
     <div id="oContent">
       <a-card style="width: 750px;height:230px;border-top:10px solid #1890F7;box-sizing:border-box;background: rgba(255,255,255,0.6)!important;">
           <h2>公告通知</h2>
-          <div>
-              <ul>
-                  <li>
-                    <span>
-                        系统升级通知：2020年08月1日晚8:00进行系统升级处理，供应商管理平台将从8:00开始停止使用，预计耗时1小时，晚9:00恢复系统使用，请各位注意保存单据数据。
-                    </span>
-                  </li>
-              </ul>
-          </div>
       </a-card>
       <a-card style="width: 550px;height:230px;border-top:10px solid #1890F7;box-sizing:border-box;background: rgba(255,255,255,0.6)!important;">
           <h2>预警消息</h2>

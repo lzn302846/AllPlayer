@@ -6,6 +6,13 @@
   "description": "起点",
   "glyphs": [
     {
+      "icon_id": "11536825",
+      "name": "雪花",
+      "font_class": "xuehua",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
       "icon_id": "356446",
       "name": "减号",
       "font_class": "jianhao",
